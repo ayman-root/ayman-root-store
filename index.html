@@ -4,13 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AYMAN ROOT - المتجر الرسمي</title>
-    <!-- مكتبات Firebase الأساسية -->
+    <!-- استدعاء فايربيس بالطريقة المباشرة للمتصفح -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // بيانات مشروع Firebase الصحيحة 100%
         const firebaseConfig = {
             apiKey: "AIzaSyBBJ4SjNaKb80B_nCDme2UQrzQh0kIoyU0",
             authDomain: "ayman-root-store.firebaseapp.com",
@@ -25,7 +24,6 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // ربط الدوال بالواجهة العامة
         window.openModal = function(id) { document.getElementById(id).style.display = 'flex'; }
         window.closeModal = function(id) { document.getElementById(id).style.display = 'none'; }
 
@@ -35,7 +33,7 @@
             const password = document.getElementById('regPassword').value;
 
             if(!name || !email || !password) {
-                alert('الرجاء إدخال كافة البيانات المطلوبة!');
+                alert('الرجاء إدخال كافة البيانات!');
                 return;
             }
 
@@ -43,7 +41,6 @@
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                 const user = userCredential.user;
 
-                // حفظ بيانات المستخدم وحالة التفعيل في قاعدة البيانات
                 await setDoc(doc(db, "users", user.uid), {
                     name: name,
                     email: email,
@@ -51,7 +48,7 @@
                     createdAt: new Date()
                 });
 
-                alert('تم إنشاء الحساب بنجاح! حسابك الآن بانتظار تفعيل المطور أيمن.');
+                alert('تم إنشاء الحساب بنجاح! بانتظار تفعيل المطور أيمن.');
                 closeModal('registerModal');
             } catch (error) {
                 alert('خطأ في التسجيل: ' + error.message);
@@ -67,7 +64,7 @@
                 alert('تم تسجيل الدخول بنجاح!');
                 closeModal('loginModal');
             } catch (error) {
-                alert('فشل تسجيل الدخول: تأكد من البريد وكلمة المرور.');
+                alert('فشل تسجيل الدخول: تأكد من صحة البريد وكلمة المرور.');
             }
         }
 
@@ -80,7 +77,7 @@
         window.checkInstallPermission = async function(manifestUrl) {
             const user = auth.currentUser;
             if (!user) {
-                alert('يجب تسجيل الدخول أو إنشاء حساب أولاً لتثبيت التطبيقات!');
+                alert('يجب تسجيل الدخول أولاً لتثبيت التطبيقات!');
                 openModal('loginModal');
                 return;
             }
@@ -89,7 +86,7 @@
             if (userDoc.exists() && userDoc.data().isApproved) {
                 window.location.href = `itms-services://?action=download-manifest&url=${manifestUrl}`;
             } else {
-                alert('عذراً، حسابك لم يتم تفعيله بعد من قِبل المطور أيمن. تواصل معنا عبر تليجرام لتفعيل اشتراكك.');
+                alert('عذراً، حسابك غير مفعل من قِبل المطور أيمن حتى الآن.');
             }
         }
 
@@ -102,11 +99,11 @@
                 const isApproved = userData.isApproved || false;
 
                 nav.innerHTML = `<button class="btn" onclick="openModal('profileModal')">👤 ${name}</button>`;
-                
                 document.getElementById('profileEmailDisplay').innerText = user.email;
+                
                 const statusEl = document.getElementById('devStatus');
                 if (isApproved) {
-                    statusEl.innerText = "✔ مفعل رسمياً (VIP)";
+                    statusEl.innerText = "✔ مفعل (VIP)";
                     statusEl.style.color = "var(--success-color)";
                 } else {
                     statusEl.innerText = "⏳ في انتظار تفعيل المطور أيمن";
@@ -134,64 +131,28 @@
             --danger-color: #ef4444;
         }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background: var(--bg-color);
-            color: var(--text-main);
-            margin: 0;
-            padding: 0;
-            direction: rtl;
-        }
-
-        header {
-            background: rgba(30, 41, 59, 0.8);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--border-color);
-            padding: 15px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg-color); color: var(--text-main); margin: 0; padding: 0; direction: rtl; }
+        header { background: rgba(30, 41, 59, 0.8); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-color); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
         .logo { font-size: 20px; font-weight: bold; color: #38bdf8; text-decoration: none; }
         .nav-btns { display: flex; gap: 10px; }
-        .btn {
-            background: var(--accent-color); color: white; border: none; padding: 8px 16px;
-            border-radius: 20px; font-size: 14px; font-weight: bold; cursor: pointer; text-decoration: none; transition: 0.2s;
-        }
+        .btn { background: var(--accent-color); color: white; border: none; padding: 8px 16px; border-radius: 20px; font-size: 14px; font-weight: bold; cursor: pointer; text-decoration: none; transition: 0.2s; }
         .btn:hover { background: var(--accent-hover); }
         .btn-outline { background: transparent; border: 1px solid var(--border-color); color: var(--text-main); }
-
         .container { max-width: 800px; margin: 30px auto; padding: 0 20px; }
         .hero { text-align: center; margin-bottom: 40px; }
         .hero h1 { font-size: 32px; color: #38bdf8; margin-bottom: 10px; }
         .hero p { color: var(--text-secondary); font-size: 16px; }
-
         .section-title { font-size: 20px; margin-bottom: 15px; border-right: 4px solid var(--accent-color); padding-right: 10px; }
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 40px; }
         .card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 20px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
         .card h3 { margin: 10px 0; font-size: 18px; }
         .card p { color: var(--text-secondary); font-size: 13px; margin-bottom: 20px; }
-
         .social-bar { display: flex; justify-content: center; gap: 15px; margin: 30px 0; flex-wrap: wrap; }
         .social-btn { background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-main); padding: 10px 20px; border-radius: 12px; text-decoration: none; font-size: 14px; display: flex; align-items: center; gap: 8px; transition: 0.2s; }
         .social-btn:hover { border-color: var(--accent-color); }
-
-        .modal {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.7); backdrop-filter: blur(5px); justify-content: center; align-items: center; z-index: 2000;
-        }
-        .modal-content {
-            background: var(--card-bg); border: 1px solid var(--border-color); padding: 30px;
-            border-radius: 20px; width: 100%; max-width: 400px; text-align: center; position: relative;
-        }
-        .modal-content input {
-            width: 100%; padding: 12px; margin: 10px 0; background: var(--bg-color);
-            border: 1px solid var(--border-color); border-radius: 8px; color: white; box-sizing: border-box;
-        }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); backdrop-filter: blur(5px); justify-content: center; align-items: center; z-index: 2000; }
+        .modal-content { background: var(--card-bg); border: 1px solid var(--border-color); padding: 30px; border-radius: 20px; width: 100%; max-width: 400px; text-align: center; position: relative; }
+        .modal-content input { width: 100%; padding: 12px; margin: 10px 0; background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 8px; color: white; box-sizing: border-box; }
         .close-btn { position: absolute; top: 15px; left: 15px; background: none; border: none; color: var(--text-secondary); font-size: 18px; cursor: pointer; }
     </style>
 </head>
