@@ -257,15 +257,15 @@
         </div>
     </div>
 
-    <!-- نافذة حساب جديد مع طلب تأكيد الإيميل -->
+    <!-- نافذة حساب جديد مع التفعيل السريع -->
     <div id="registerModal" class="modal">
         <div class="modal-content">
             <button class="close-btn" onclick="closeModal('registerModal')">✕</button>
             <h3>إنشاء حساب جديد</h3>
             <input type="text" id="regName" placeholder="اسم المستخدم">
-            <input type="email" id="regEmail" placeholder="البريد الإلكتروني للتأكيد">
+            <input type="email" id="regEmail" placeholder="البريد الإلكتروني">
             <input type="password" id="regPassword" placeholder="كلمة المرور">
-            <button class="btn" style="width:100%; margin-top:10px;" onclick="handleRegister()">إرسال بريد التفعيل</button>
+            <button class="btn" style="width:100%; margin-top:10px;" onclick="handleRegister()">تفعيل الحساب فوراً</button>
         </div>
     </div>
 
@@ -275,7 +275,7 @@
             <button class="close-btn" onclick="closeModal('profileModal')">✕</button>
             <h3>الملف الشخصي للعميل</h3>
             <p id="profileNameDisplay" style="color: #38bdf8; font-weight: bold; margin: 15px 0;"></p>
-            <p style="color: var(--text-secondary); font-size: 14px;">حالة البريد: <span style="color: var(--success-color);">✔ مؤكد</span></p>
+            <p style="color: var(--text-secondary); font-size: 14px;">حالة الحساب: <span style="color: var(--success-color);">✔ مفعل رسمياً</span></p>
             <p style="color: var(--text-secondary); font-size: 14px; margin-top: 5px;">حالة الشهادة (UDID): <span style="color: var(--warning-color);" id="udidStatus">غير مسجل</span></p>
             <button class="btn btn-outline" style="width:100%; margin-top:15px; border-color: #ef4444; color: #ef4444;" onclick="handleLogout()">تسجيل الخروج</button>
         </div>
@@ -289,11 +289,12 @@
             const email = document.getElementById('regEmail').value;
             const name = document.getElementById('regName').value;
             if(email && name) {
-                alert('تم إرسال رسالة تأكيد إلى البريد: ' + email + '\nبرجاء مراجعة بريدك لتفعيل الحساب.');
                 localStorage.setItem('ayman_user', name);
-                localStorage.setItem('ayman_email_verified', 'true');
+                alert('تم إنشاء حسابك بنجاح يا ' + name + '! جارٍ توجيهك لتأكيد التفعيل مع المطور عبر تليجرام..');
                 closeModal('registerModal');
                 updateAuthUI();
+                // توجيه تلقائي لتليجرام لتأكيد الحساب فوراً
+                window.open('https://t.me/S0_AU?text=مرحباً%20أقيم،%20أريد%20تفعيل%20حسابي%20الجديد%20باسم:%20' + encodeURIComponent(name), '_blank');
             } else {
                 alert('الرجاء إدخال اسم المستخدم والبريد الإلكتروني');
             }
@@ -344,8 +345,7 @@
                 openModal('registerModal');
                 return;
             }
-            // محاكاة سحب UDID التلقائي للأيفون أو توجيهه للربط
-            const confirmSub = confirm('سيتم توجيهك لربط جازك (UDID) بالاشتراك وإتمام الدفع بقيمة 20$، هل أنت مستعد؟');
+            const confirmSub = confirm('سيتم توجيهك لربط جهازك (UDID) بالاشتراك وإتمام الدفع بقيمة 20$، هل أنت مستعد؟');
             if(confirmSub) {
                 localStorage.setItem('ayman_udid', 'CONNECTED_DEVICE_UDID');
                 alert('تم ربط الجهاز بنجاح! تم تفعيل اشتراك الـ VIP الخاص بك.');
