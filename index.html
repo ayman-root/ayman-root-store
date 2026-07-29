@@ -10,7 +10,7 @@
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // بيانات مشروع Firebase الخاص بك
+        // بيانات مشروع Firebase الصحيحة 100%
         const firebaseConfig = {
             apiKey: "AIzaSyBBJ4SjNaKb80B_nCDme2UQrzQh0kIoyU0",
             authDomain: "ayman-root-store.firebaseapp.com",
@@ -43,7 +43,7 @@
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                 const user = userCredential.user;
 
-                // حفظ بيانات المستخدم وحالة التفعيل في قاعدة البيانات (غير مفعل افتراضياً لحين موافقتك)
+                // حفظ بيانات المستخدم وحالة التفعيل في قاعدة البيانات
                 await setDoc(doc(db, "users", user.uid), {
                     name: name,
                     email: email,
@@ -85,7 +85,6 @@
                 return;
             }
 
-            // جلب حالة التفعيل من قاعدة البيانات
             const userDoc = await getDoc(doc(db, "users", user.uid));
             if (userDoc.exists() && userDoc.data().isApproved) {
                 window.location.href = `itms-services://?action=download-manifest&url=${manifestUrl}`;
@@ -94,7 +93,6 @@
             }
         }
 
-        // مراقبة حالة تسجيل الدخول وتحديث واجهة المستخدم
         onAuthStateChanged(auth, async (user) => {
             const nav = document.getElementById('authNav');
             if (user) {
