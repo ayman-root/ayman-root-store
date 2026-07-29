@@ -5,15 +5,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>متجر AYMAN ROOT</title>
     <style>
-        body { font-family: Tahoma, sans-serif; text-align: center; background: #0f172a; color: #fff; padding-top: 80px; }
-        .btn { background: #2563eb; color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; font-size: 18px; display: inline-block; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
-        h1 { color: #38bdf8; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #0b0f19; color: #fff; margin: 0; padding: 20px; text-align: center; }
+        h1 { color: #38bdf8; margin-bottom: 5px; font-size: 28px; }
+        p.subtitle { color: #94a3b8; margin-bottom: 30px; }
+        .app-grid { display: flex; flex-direction: column; gap: 15px; max-width: 450px; margin: 0 auto; }
+        .app-card { background: #1e293b; padding: 15px 20px; border-radius: 16px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 12px rgba(0,0,0,0.3); border: 1px solid #334155; }
+        .app-info { display: flex; align-items: center; gap: 15px; text-align: right; }
+        .app-icon { width: 60px; height: 60px; border-radius: 14px; background: #3b82f6; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: bold; color: #fff; overflow: hidden; }
+        .app-icon img { width: 100%; height: 100%; object-fit: cover; }
+        .app-details h3 { margin: 0 0 5px 0; font-size: 18px; color: #f8fafc; }
+        .app-details p { margin: 0; font-size: 13px; color: #94a3b8; }
+        .install-btn { background: #2563eb; color: white; padding: 8px 18px; text-decoration: none; border-radius: 20px; font-weight: bold; font-size: 14px; transition: 0.2s; }
+        .install-btn:active { background: #1d4ed8; transform: scale(0.95); }
+        footer { margin-top: 40px; color: #64748b; font-size: 12px; }
     </style>
 </head>
 <body>
+
     <h1>AYMAN ROOT STORE</h1>
-    <p>متجر تثبيت التطبيقات المباشر</p>
-    <br>
-    <a class="btn" href="itms-services://?action=download-manifest&url=https://raw.githubusercontent.com/ayman-root/ayman-root-store/main/manifest.plist">تثبيت التطبيق الآن</a>
+    <p class="subtitle">المتجر الرسمي لتطبيقات الأيفون المعدلة</p>
+
+    <div class="app-grid">
+        <!-- تطبيق 1 -->
+        <div class="app-card">
+            <div class="app-info">
+                <div class="app-icon">💼</div>
+                <div class="app-details">
+                    <h3>Jisr HR</h3>
+                    <p>الإصدار 9.3.21 • موثوق</p>
+                </div>
+            </div>
+            <a class="install-btn" href="itms-services://?action=download-manifest&url=https://ayman-root.github.io/ayman-root-store/manifest.plist">تثبيت</a>
+        </div>
+
+        <!-- يمكنك إضافة تطبيق ثانٍ هنا بنفس النمط -->
+    </div>
+
+    <footer>
+        <p>© 2026 AYMAN ROOT - جميع الحقوق محفوظة</p>
+    </footer>
+
 </body>
 </html>
